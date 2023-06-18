@@ -64,15 +64,29 @@ jobs:
           CONFIG_TARGET_sunxi=y
           CONFIG_TARGET_sunxi_cortexa7=y
           CONFIG_TARGET_sunxi_cortexa7_DEVICE_friendlyarm_nanopi-r1=y
+          CONFIG_BUSYBOX_CUSTOM=y
           CONFIG_ARIA2_BITTORRENT=y
           CONFIG_ARIA2_NOXML=y
           CONFIG_ARIA2_OPENSSL=y
           CONFIG_ARIA2_SFTP=y
           CONFIG_ARIA2_WEBSOCKET=y
+          CONFIG_BUSYBOX_CONFIG_FEATURE_UDHCP_8021Q=y
+          CONFIG_BUSYBOX_CONFIG_HOSTNAME=y
           CONFIG_BUSYBOX_CONFIG_UDHCPC_SLACK_FOR_BUGGY_SERVERS=255
           CONFIG_LIBSSH2_OPENSSL=y
           CONFIG_PACKAGE_aria2=y
           CONFIG_PACKAGE_bash=y
+          CONFIG_PACKAGE_collectd=y
+          CONFIG_PACKAGE_collectd-mod-cpu=y
+          CONFIG_PACKAGE_collectd-mod-interface=y
+          CONFIG_PACKAGE_collectd-mod-iwinfo=y
+          CONFIG_PACKAGE_collectd-mod-load=y
+          CONFIG_PACKAGE_collectd-mod-memory=y
+          CONFIG_PACKAGE_collectd-mod-network=y
+          CONFIG_PACKAGE_collectd-mod-rrdtool=y
+          CONFIG_PACKAGE_collectd-mod-thermal=y
+          CONFIG_PACKAGE_collectd-mod-uptime=y
+          CONFIG_PACKAGE_collectd-mod-wireless=y
           CONFIG_PACKAGE_coreutils=y
           CONFIG_PACKAGE_coreutils-nohup=y
           CONFIG_PACKAGE_kmod-inet-diag=y
@@ -80,13 +94,16 @@ jobs:
           CONFIG_PACKAGE_libcap-bin=y
           CONFIG_PACKAGE_libcap-bin-capsh-shell="/bin/sh"
           CONFIG_PACKAGE_libgmp=y
+          CONFIG_PACKAGE_libltdl=y
           CONFIG_PACKAGE_libncurses=y
           CONFIG_PACKAGE_libreadline=y
+          CONFIG_PACKAGE_librrd1=y
           CONFIG_PACKAGE_libruby=y
           CONFIG_PACKAGE_libssh2=y
           CONFIG_PACKAGE_libstdcpp=y
           CONFIG_PACKAGE_libyaml=y
           CONFIG_PACKAGE_luci-app-openclash=y
+          CONFIG_PACKAGE_r8169-firmware=y
           CONFIG_PACKAGE_ruby=y
           CONFIG_PACKAGE_ruby-bigdecimal=y
           CONFIG_PACKAGE_ruby-date=y
@@ -100,8 +117,8 @@ jobs:
           CONFIG_PACKAGE_ruby-yaml=y
           CONFIG_PACKAGE_terminfo=y
           CONFIG_PACKAGE_unzip=y
-          CONFIG_SUNXI_SD_BOOT_PARTSIZE=128
-          CONFIG_TARGET_ROOTFS_PARTSIZE=512
+          CONFIG_SUNXI_SD_BOOT_PARTSIZE=512
+          CONFIG_TARGET_ROOTFS_PARTSIZE=1024
           EOF
           #
           # ===============================================================
