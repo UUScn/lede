@@ -70,8 +70,16 @@ jobs:
           CONFIG_ARIA2_OPENSSL=y
           CONFIG_ARIA2_SFTP=y
           CONFIG_ARIA2_WEBSOCKET=y
+          CONFIG_BUSYBOX_CONFIG_ARP=y
+          CONFIG_BUSYBOX_CONFIG_ARPING=y
+          CONFIG_BUSYBOX_CONFIG_FEATURE_UDHCPC6_RFC3646=y
+          CONFIG_BUSYBOX_CONFIG_FEATURE_UDHCPC6_RFC4704=y
+          CONFIG_BUSYBOX_CONFIG_FEATURE_UDHCPC6_RFC4833=y
+          CONFIG_BUSYBOX_CONFIG_FEATURE_UDHCPC6_RFC5970=y
           CONFIG_BUSYBOX_CONFIG_FEATURE_UDHCP_8021Q=y
           CONFIG_BUSYBOX_CONFIG_HOSTNAME=y
+          CONFIG_BUSYBOX_CONFIG_UDHCPC6=y
+          CONFIG_BUSYBOX_CONFIG_UDHCPC6_DEFAULT_SCRIPT=""
           CONFIG_BUSYBOX_CONFIG_UDHCPC_SLACK_FOR_BUGGY_SERVERS=255
           CONFIG_LIBSSH2_OPENSSL=y
           CONFIG_PACKAGE_aria2=y
@@ -89,7 +97,9 @@ jobs:
           CONFIG_PACKAGE_collectd-mod-wireless=y
           CONFIG_PACKAGE_coreutils=y
           CONFIG_PACKAGE_coreutils-nohup=y
+          CONFIG_PACKAGE_kmod-fixed-phy=y
           CONFIG_PACKAGE_kmod-inet-diag=y
+          CONFIG_PACKAGE_kmod-libphy=y
           CONFIG_PACKAGE_libcap=y
           CONFIG_PACKAGE_libcap-bin=y
           CONFIG_PACKAGE_libcap-bin-capsh-shell="/bin/sh"
@@ -103,7 +113,6 @@ jobs:
           CONFIG_PACKAGE_libstdcpp=y
           CONFIG_PACKAGE_libyaml=y
           CONFIG_PACKAGE_luci-app-openclash=y
-          CONFIG_PACKAGE_r8169-firmware=y
           CONFIG_PACKAGE_ruby=y
           CONFIG_PACKAGE_ruby-bigdecimal=y
           CONFIG_PACKAGE_ruby-date=y
