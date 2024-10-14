@@ -15,7 +15,7 @@
 		led-running = &sys_led;
 		led-upgrade = &sys_led;
 	};
-	
+
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
@@ -24,11 +24,10 @@
 		reg = <0 0x40000000 0 0x40000000>;
 	};
 
-	gpio-keys {
+	keys {
 		compatible = "gpio-keys";
 
-		// seems to conflict with pcie_clk, needs investigate
-		button-reset {
+		reset {
 			label = "reset";
 			linux,code = <KEY_RESTART>;
 			gpios = <&pio 9 GPIO_ACTIVE_LOW>;
@@ -67,6 +66,15 @@
 			label = "led-5";
 			gpios = <&pio 20 GPIO_ACTIVE_LOW>;
 		};
+	};
+
+	reg_1p8v: regulator-1p8v {
+		compatible = "regulator-fixed";
+		regulator-name = "fixed-1.8V";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-boot-on;
+		regulator-always-on;
 	};
 
 	reg_3p3v: regulator-3p3v {
@@ -158,11 +166,6 @@
 			mediatek,pull-down-adv = <1>;
 			output-low;
 		};
-
-		mux {
-			function = "pcie";
-			groups = "pcie_clk", "pcie_wake", "pcie_pereset";
-		};
 	};
 
 	usb_pins: usb-pins {
@@ -183,6 +186,23 @@
 			drive-strength = <8>;
 			mediatek,pull-down-adv = <1>;
 			output-low;
+		};
+	};
+
+	wf_dbdc_pins: wf-dbdc-pins {
+		mux {
+			function = "wifi";
+			groups = "wf_dbdc";
+		};
+		conf {
+			pins = "WF0_HB1", "WF0_HB2", "WF0_HB3", "WF0_HB4",
+			       "WF0_HB0", "WF0_HB0_B", "WF0_HB5", "WF0_HB6",
+			       "WF0_HB7", "WF0_HB8", "WF0_HB9", "WF0_HB10",
+			       "WF0_TOP_CLK", "WF0_TOP_DATA", "WF1_HB1",
+			       "WF1_HB2", "WF1_HB3", "WF1_HB4", "WF1_HB0",
+			       "WF1_HB5", "WF1_HB6", "WF1_HB7", "WF1_HB8",
+			       "WF1_TOP_CLK", "WF1_TOP_DATA";
+			drive-strength = <4>;
 		};
 	};
 };
@@ -247,5 +267,11 @@
 };
 
 &watchdog {
+	status = "okay";
+};
+
+&wifi {
+	pinctrl-names = "dbdc";
+	pinctrl-0 = <&wf_dbdc_pins>;
 	status = "okay";
 };
