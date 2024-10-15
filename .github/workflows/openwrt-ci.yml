@@ -68,7 +68,6 @@ jobs:
           CONFIG_PACKAGE_bash=y
           CONFIG_PACKAGE_bridge=y
           CONFIG_PACKAGE_coreutils-nohup=y
-          CONFIG_PACKAGE_dnsmasq-dhcpv6=y
           CONFIG_PACKAGE_dnsmasq_full_conntrack=y
           CONFIG_PACKAGE_dnsmasq_full_dnssec=y
           CONFIG_PACKAGE_dnsmasq_full_nftset=y
