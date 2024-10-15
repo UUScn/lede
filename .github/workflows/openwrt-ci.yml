@@ -64,18 +64,40 @@ jobs:
           CONFIG_TARGET_x86=y
           CONFIG_TARGET_x86_64=y
           CONFIG_TARGET_x86_64_DEVICE_generic=y
+          CONFIG_PACKAGE_6in4=y
           CONFIG_PACKAGE_bash=y
+          CONFIG_PACKAGE_bridge=y
           CONFIG_PACKAGE_coreutils-nohup=y
+          CONFIG_PACKAGE_dnsmasq-dhcpv6=y
+          CONFIG_PACKAGE_dnsmasq_full_conntrack=y
+          CONFIG_PACKAGE_dnsmasq_full_dnssec=y
+          CONFIG_PACKAGE_dnsmasq_full_nftset=y
+          CONFIG_PACKAGE_ip6tables=y
+          CONFIG_PACKAGE_ip6tables-extra=y
+          CONFIG_PACKAGE_ip6tables-mod-nat=y
+          CONFIG_PACKAGE_ipv6helper=y
+          CONFIG_PACKAGE_jansson=y
           CONFIG_PACKAGE_kmod-inet-diag=y
+          CONFIG_PACKAGE_kmod-ip6tables=y
+          CONFIG_PACKAGE_kmod-ip6tables-extra=y
+          CONFIG_PACKAGE_kmod-ipt-nat6=y
+          CONFIG_PACKAGE_kmod-iptunnel=y
+          CONFIG_PACKAGE_kmod-iptunnel4=y
+          CONFIG_PACKAGE_kmod-nf-ipt6=y
+          CONFIG_PACKAGE_kmod-nf-log6=y
+          CONFIG_PACKAGE_kmod-nf-nat6=y
+          CONFIG_PACKAGE_kmod-nf-reject6=y
+          CONFIG_PACKAGE_kmod-nft-core=y
+          CONFIG_PACKAGE_kmod-sit=y
           CONFIG_PACKAGE_libcap-bin=y
           CONFIG_PACKAGE_libcap-bin-capsh-shell="/bin/sh"
+          CONFIG_PACKAGE_libnetfilter-conntrack=y
+          CONFIG_PACKAGE_libnfnetlink=y
+          CONFIG_PACKAGE_libnftnl=y
           CONFIG_PACKAGE_libruby=y
           CONFIG_PACKAGE_libyaml=y
           CONFIG_PACKAGE_luci-app-openclash=y
-          CONFIG_PACKAGE_quagga=y
-          CONFIG_PACKAGE_quagga-libzebra=y
-          CONFIG_PACKAGE_quagga-watchquagga=y
-          CONFIG_PACKAGE_quagga-zebra=y
+          CONFIG_PACKAGE_nftables-json=y
           CONFIG_PACKAGE_ruby=y
           CONFIG_PACKAGE_ruby-bigdecimal=y
           CONFIG_PACKAGE_ruby-date=y
@@ -91,9 +113,7 @@ jobs:
           CONFIG_TARGET_EXT4_BLOCKSIZE=4096
           CONFIG_TARGET_EXT4_BLOCKSIZE_4K=y
           CONFIG_TARGET_EXT4_RESERVED_PCT=0
-          CONFIG_TARGET_KERNEL_PARTSIZE=256
           CONFIG_TARGET_ROOTFS_EXT4FS=y
-          CONFIG_TARGET_ROOTFS_PARTSIZE=1024
           EOF
           #
           # ===============================================================
