@@ -44,6 +44,7 @@ jobs:
           sudo -E apt clean
           sudo -E timedatectl set-timezone "Asia/Shanghai"
 
+
       - name: Checkout OpenWrt
         uses: actions/checkout@v4
 
@@ -65,6 +66,7 @@ jobs:
         run: |
           sed -i 's/#src-git helloworld/src-git helloworld/g' ./feeds.conf.default
           ./scripts/feeds update -a
+          ./scripts/feeds update -af
           ./scripts/feeds install -a
 
       - name: Generate configuration file
@@ -78,55 +80,32 @@ jobs:
           CONFIG_TARGET_x86=y
           CONFIG_TARGET_x86_64=y
           CONFIG_TARGET_x86_64_DEVICE_generic=y
+          CONFIG_FRR_INTERNAL=y
+          CONFIG_FRR_NO_SNMP=y
           CONFIG_PACKAGE_6in4=y
-          CONFIG_PACKAGE_bash=y
-          CONFIG_PACKAGE_bridge=y
-          CONFIG_PACKAGE_coreutils-nohup=y
-          CONFIG_PACKAGE_dnsmasq_full_conntrack=y
-          CONFIG_PACKAGE_dnsmasq_full_dnssec=y
-          CONFIG_PACKAGE_dnsmasq_full_nftset=y
-          CONFIG_PACKAGE_ip6tables=y
+          CONFIG_PACKAGE_frr=y
+          CONFIG_PACKAGE_frr-bgpd=y
+          CONFIG_PACKAGE_frr-libfrr=y
+          CONFIG_PACKAGE_frr-staticd=y
+          CONFIG_PACKAGE_frr-vtysh=y
+          CONFIG_PACKAGE_frr-watchfrr=y
+          CONFIG_PACKAGE_frr-zebra=y
           CONFIG_PACKAGE_ip6tables-extra=y
           CONFIG_PACKAGE_ip6tables-mod-nat=y
           CONFIG_PACKAGE_ipv6helper=y
-          CONFIG_PACKAGE_jansson=y
-          CONFIG_PACKAGE_kmod-inet-diag=y
-          CONFIG_PACKAGE_kmod-ip6tables=y
           CONFIG_PACKAGE_kmod-ip6tables-extra=y
-          CONFIG_PACKAGE_kmod-ipt-nat6=y
           CONFIG_PACKAGE_kmod-iptunnel=y
           CONFIG_PACKAGE_kmod-iptunnel4=y
-          CONFIG_PACKAGE_kmod-nf-ipt6=y
-          CONFIG_PACKAGE_kmod-nf-log6=y
-          CONFIG_PACKAGE_kmod-nf-nat6=y
-          CONFIG_PACKAGE_kmod-nf-reject6=y
-          CONFIG_PACKAGE_kmod-nft-core=y
           CONFIG_PACKAGE_kmod-sit=y
-          CONFIG_PACKAGE_libcap-bin=y
-          CONFIG_PACKAGE_libcap-bin-capsh-shell="/bin/sh"
-          CONFIG_PACKAGE_libnetfilter-conntrack=y
-          CONFIG_PACKAGE_libnfnetlink=y
-          CONFIG_PACKAGE_libnftnl=y
-          CONFIG_PACKAGE_libruby=y
-          CONFIG_PACKAGE_libyaml=y
-          CONFIG_PACKAGE_luci-app-openclash=y
-          CONFIG_PACKAGE_nftables-json=y
-          CONFIG_PACKAGE_ruby=y
-          CONFIG_PACKAGE_ruby-bigdecimal=y
-          CONFIG_PACKAGE_ruby-date=y
-          CONFIG_PACKAGE_ruby-digest=y
-          CONFIG_PACKAGE_ruby-enc=y
-          CONFIG_PACKAGE_ruby-forwardable=y
-          CONFIG_PACKAGE_ruby-pstore=y
-          CONFIG_PACKAGE_ruby-psych=y
-          CONFIG_PACKAGE_ruby-stringio=y
-          CONFIG_PACKAGE_ruby-strscan=y
-          CONFIG_PACKAGE_ruby-yaml=y
-          CONFIG_PACKAGE_unzip=y
+          CONFIG_PACKAGE_libatomic=y
+          CONFIG_PACKAGE_libcap=y
+          CONFIG_PACKAGE_libyang=y
+          CONFIG_PACKAGE_more=y
           CONFIG_TARGET_EXT4_BLOCKSIZE=4096
           CONFIG_TARGET_EXT4_BLOCKSIZE_4K=y
           CONFIG_TARGET_EXT4_RESERVED_PCT=0
           CONFIG_TARGET_ROOTFS_EXT4FS=y
+          CONFIG_TARGET_ROOTFS_PERSIST_VAR=y
           CONFIG_VMDK_IMAGES=y
           EOF
           #
