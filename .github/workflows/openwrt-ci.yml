@@ -134,6 +134,7 @@ jobs:
           CONFIG_TARGET_EXT4_RESERVED_PCT=0
           CONFIG_TARGET_ROOTFS_EXT4FS=y
           CONFIG_VMDK_IMAGES=y
+          CONFIG_TARGET_ROOTFS_PARTSIZE=1024
           # CONFIG_TARGET_IMAGES_GZIP is not set
           # CONFIG_PACKAGE_procd-ujail is not set
           # CONFIG_TARGET_ROOTFS_SQUASHFS is not set

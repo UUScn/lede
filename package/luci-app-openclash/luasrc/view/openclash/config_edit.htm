@@ -1,3 +1,7 @@
+<%
+    local fs = require "luci.openclash"
+    local plugin_version = fs.oc_version()
+%>
 <div class="oc">
     <div class="config-editor-model-overlay" id="config-editor-overlay">
         <div class="config-editor-model" id="config-editor-model">
@@ -8,40 +12,22 @@
                 </div>
                 <div class="config-editor-actions">
                     <button type="button" class="icon-btn" id="config-editor-layout" title="<%:Compare%>" style="display:none;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-                            <rect x="13" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-                        </svg>
+                        <svg width="14" height="14"><use href="#oc-icon-compare"/></svg>
                     </button>
                     <button type="button" class="icon-btn" id="config-editor-download" title="<%:Download%>">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7,11 12,16 17,11"></polyline>
-                            <line x1="12" y1="2" x2="12" y2="16"></line>
-                        </svg>
+                        <svg width="14" height="14"><use href="#oc-icon-download"/></svg>
                     </button>
                     <button type="button" class="icon-btn" id="config-editor-save" title="<%:Save%>">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                            <polyline points="17,21 17,13 7,13 7,21"></polyline>
-                            <polyline points="7,3 7,8 15,8"></polyline>
-                        </svg>
+                        <svg width="14" height="14"><use href="#oc-icon-save"/></svg>
                     </button>
                     <button type="button" class="icon-btn" id="config-editor-close" title="<%:Close%>">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
+                        <svg width="14" height="14"><use href="#oc-icon-close"/></svg>
                     </button>
                 </div>
             </div>
 
             <div id="overwrite-banner" class="overwrite-banner" style="display:none;">
-                <svg style="flex-shrink:0;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--error-color)" stroke-width="2">
-                    <circle cx="12" cy="12" r="10" stroke="var(--error-color)" fill="rgba(255,80,80,0.12)"/>
-                    <line x1="12" y1="5" x2="12" y2="13"/>
-                    <circle cx="12" cy="16" r="0.5"/>
-                </svg>
+                <svg style="flex-shrink:0;" width="20" height="20"><use href="#oc-icon-alert-circle"/></svg>
                 <span>
                     <%:You are editing the overwrite script, please note that some settings may cause the abnormal, be careful with the modification!%>
                 </span>
@@ -68,10 +54,6 @@
             </div>
 
             <div class="config-editor-content">
-                <div class="config-editor-loading" id="config-editor-loading">
-                    <div class="loading-spinner"></div>
-                    <span><%:Loading config file...%></span>
-                </div>
                 <textarea id="config-editor-textarea" style="display: none;"></textarea>
                 <div id="config-mergeview-container" style="display:none;width:100%;height:100%;"></div>
             </div>
@@ -85,7 +67,7 @@
                     <span id="config-editor-status-text"><%:Ready%></span>
                 </div>
                 <div class="config-editor-help">
-                    <span id="config-editor-help"><%:Press F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom%></span>
+                    <span id="config-editor-help"><%:Press%> <b style="color:var(--success-color)">F11</b> <%:for fullscreen,%> <b style="color:var(--success-color)">Esc</b> <%:to exit fullscreen,%> <b style="color:var(--success-color)">Ctrl + <%:Mouse Wheel%></b> <%:to zoom%></span>
                 </div>
                 <div class="config-editor-resize-handle" id="config-editor-resize-handle"></div>
             </div>
@@ -93,21 +75,26 @@
     </div>
 </div>
 
+<script src="/luci-static/resources/openclash/js/common.js?v=<%=plugin_version%>"></script>
+<script src="/luci-static/resources/openclash/js/oc-icons.js?v=<%=plugin_version%>"></script>
+<script src="/luci-static/resources/openclash/js/cm6.min.js?v=<%=plugin_version%>"></script>
+<%+openclash/common%>
 <script type="text/javascript">
-var levelTranslations = {
-    'info': '<%:Info%>',
-    'warning': '<%:Warning%>',
-    'error': '<%:Error%>',
-    'debug': '<%:Debug%>',
-    'tip': '<%:Tip%>',
-    'watchdog': '<%:Watchdog%>',
-	'fatal': '<%:Fatal%>'
+ocRegisterEditorHotkeys();
+
+var _ocIcons = {
+	SVG_COMPARE: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/><rect x="14" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>',
+	SVG_RESTORE: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/></svg>'
 };
+
+// Uses EditorView.updateListener instead of view.dispatch override.
+// dispatch() can receive TransactionSpec objects which lack docChanged.
 
 var ConfigEditor = {
     overlay: null,
     model: null,
     editorInstance: null,
+    _currentEditorMode: null,
     originalContent: '',
     isModified: false,
     currentZoom: 100,
@@ -117,17 +104,9 @@ var ConfigEditor = {
     currentViewMode: 'original',
     runtimeContent: '',
     mergeViewActive: false,
-    SVG_COMPARE: `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-            <rect x="13" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
-    `,
-    SVG_RESTORE: `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
-    `,
+    isFullscreen: false,
+    mergeShowDifferences: true,
+
     overwriteFiles: [],
     overwriteSubInfo: {},
     overwriteCardBar: null,
@@ -172,16 +151,10 @@ var ConfigEditor = {
         document.addEventListener('keydown', function(e) {
             if (!self.overlay.classList.contains('show')) return;
 
-            if ((e.ctrlKey || e.metaKey) && (e.key === '=' || e.key === '+')) {
+            if (e.key === 'Escape' && self.isFullscreen) {
                 e.preventDefault();
-                self.zoomIn();
-            } else if ((e.ctrlKey || e.metaKey) && e.key === '-') {
-                e.preventDefault();
-                self.zoomOut();
-            } else if ((e.ctrlKey || e.metaKey) && e.key === '0') {
-                e.preventDefault();
-                self.resetZoom();
-            } else if (e.key === 'Escape' && (!self.editorInstance || !self.editorInstance.getOption("fullScreen"))) {
+                self.toggleFullscreen(false);
+            } else if (e.key === 'Escape' && !self.isFullscreen) {
                 self.closeEditor();
             }
         });
@@ -224,98 +197,17 @@ var ConfigEditor = {
                     self.showMergeView();
                     self.currentViewMode = 'original';
                     layoutBtn.title = "<%:Restore%>";
-                    layoutBtn.innerHTML = self.SVG_RESTORE;
+                    layoutBtn.innerHTML = _ocIcons.SVG_RESTORE;
                 } else {
                     self.hideMergeView();
                     layoutBtn.title = "<%:Compare%>";
-                    layoutBtn.innerHTML = self.SVG_COMPARE;
+                    layoutBtn.innerHTML = _ocIcons.SVG_COMPARE;
                 }
             });
         };
 
         this.makeDraggable();
         this.makeResizable();
-    },
-
-    _codeMirrorLoaded: false,
-    _codeMirrorLoading: null,
-
-    _loadCodeMirror: function(callback) {
-        if (this._codeMirrorLoaded) {
-            if (callback) callback();
-            return;
-        }
-        if (this._codeMirrorLoading) {
-            if (callback) this._codeMirrorLoading.then(callback);
-            return this._codeMirrorLoading;
-        }
-        var self = this;
-        var basePath = '/luci-static/resources/openclash';
-        var head = document.head || document.getElementsByTagName('head')[0];
-        var cssFiles = [
-            'lib/codemirror.css',
-            'theme/material.css',
-            'addon/fold/foldgutter.css',
-            'addon/lint/lint.css',
-            'addon/display/fullscreen.css',
-            'addon/dialog/dialog.css',
-            'addon/search/matchesonscrollbar.css',
-            'addon/merge/merge.css'
-        ];
-        var jsFiles = [
-            'lib/codemirror.js',
-            'mode/yaml/yaml.js',
-            'mode/shell/shell.js',
-            'mode/properties/properties.js',
-            'addon/fold/foldcode.js',
-            'addon/fold/foldgutter.js',
-            'addon/fold/indent-fold.js',
-            'addon/edit/matchbrackets.js',
-            'addon/selection/active-line.js',
-            'addon/lint/lint.js',
-            'addon/lint/yaml-lint.js',
-            'addon/lint/js-yaml.min.js',
-            'addon/display/fullscreen.js',
-            'addon/display/autorefresh.js',
-            'addon/dialog/dialog.js',
-            'addon/search/searchcursor.js',
-            'addon/search/search.js',
-            'addon/scroll/annotatescrollbar.js',
-            'addon/search/matchesonscrollbar.js',
-            'addon/search/jump-to-line.js',
-            'addon/merge/diff_match_patch.js',
-            'addon/merge/merge.js'
-        ];
-        var promises = [];
-        cssFiles.forEach(function(file) {
-            promises.push(new Promise(function(resolve) {
-                var link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = basePath + '/' + file;
-                link.onload = resolve;
-                link.onerror = resolve;
-                if (head) head.appendChild(link);
-                else resolve();
-            }));
-        });
-        var loadJS = function(index) {
-            if (index >= jsFiles.length) return Promise.resolve();
-            return new Promise(function(resolve) {
-                var script = document.createElement('script');
-                script.src = basePath + '/' + jsFiles[index];
-                script.onload = function() { loadJS(index + 1).then(resolve); };
-                script.onerror = function() { loadJS(index + 1).then(resolve); };
-                if (head) head.appendChild(script);
-                else resolve();
-            });
-        };
-        promises.push(loadJS(0));
-        this._codeMirrorLoading = Promise.all(promises).then(function() {
-            self._codeMirrorLoaded = true;
-            self._codeMirrorLoading = null;
-        });
-        if (callback) this._codeMirrorLoading.then(callback);
-        return this._codeMirrorLoading;
     },
 
     show: function(configFile) {
@@ -327,9 +219,10 @@ var ConfigEditor = {
         this.runtimeContent = '';
         this.isModified = false;
         this.mergeViewActive = false;
+        this.isFullscreen = false;
 
         if (this.editorInstance) {
-            if (this.editorInstance.toTextArea) this.editorInstance.toTextArea();
+            this._destroyEditor();
             this.editorInstance = null;
         }
         var textarea = document.getElementById('config-editor-textarea');
@@ -337,8 +230,7 @@ var ConfigEditor = {
             textarea.value = '';
             textarea.style.display = 'none';
         }
-        var loadingDiv = document.getElementById('config-editor-loading');
-        if (loadingDiv) loadingDiv.style.display = 'flex';
+        ocShowLoading(textarea.parentNode, '<%:Loading config file...%>');
         var mergeview = document.getElementById('config-mergeview-container');
         if (mergeview) mergeview.style.display = 'none';
 
@@ -374,9 +266,7 @@ var ConfigEditor = {
 
         this.hideMergeView();
         this.updateModeTabs();
-        this._loadCodeMirror(function() {
-            self.loadConfigContent();
-        });
+        self.loadConfigContent();
     },
 
     showOverwrite: function() {
@@ -387,9 +277,10 @@ var ConfigEditor = {
         this.runtimeContent = '';
         this.isModified = false;
         this.mergeViewActive = false;
+        this.isFullscreen = false;
 
         if (this.editorInstance) {
-            if (this.editorInstance.toTextArea) this.editorInstance.toTextArea();
+            this._destroyEditor();
             this.editorInstance = null;
         }
         var textarea = document.getElementById('config-editor-textarea');
@@ -397,8 +288,7 @@ var ConfigEditor = {
             textarea.value = '';
             textarea.style.display = 'none';
         }
-        var loadingDiv = document.getElementById('config-editor-loading');
-        if (loadingDiv) loadingDiv.style.display = 'flex';
+        ocShowLoading(textarea.parentNode, '<%:Loading config file...%>');
         var mergeview = document.getElementById('config-mergeview-container');
         if (mergeview) mergeview.style.display = 'none';
 
@@ -433,18 +323,53 @@ var ConfigEditor = {
         }
 
         this.hideMergeView();
-        this._loadCodeMirror(function() {
-            self.loadConfigContent();
-        });
+        self.loadConfigContent();
+    },
+
+    _destroyEditor: function() {
+        this.toggleFullscreen(false);
+        if (this.editorInstance) {
+            if (this.editorInstance.a && this.editorInstance.a.destroy) {
+                this.editorInstance.a.destroy();
+                if (this.editorInstance.b && this.editorInstance.b.destroy) this.editorInstance.b.destroy();
+            } else if (this.editorInstance.destroy) {
+                this.editorInstance.destroy();
+            } else if (this.editorInstance.toTextArea) {
+                this.editorInstance.toTextArea();
+            }
+            this.editorInstance = null;
+        }
+        this._currentEditorMode = null;
+        var textarea = document.getElementById('config-editor-textarea');
+        if (textarea) textarea.style.display = '';
+    },
+
+    toggleFullscreen: function(forceState) {
+        var nextState = typeof forceState === 'boolean' ? forceState : !this.isFullscreen;
+        this.isFullscreen = nextState;
+        window._ocFullscreenActive = nextState;
+        if (typeof CM6 !== 'undefined' && CM6.toggleFullscreen) {
+            if (nextState) {
+                var dom = this.editorInstance;
+                if (dom && dom.dom) dom = dom.dom;
+                if (dom && dom.classList) {
+                    if (typeof _ocEnterFullscreen === 'function') _ocEnterFullscreen(dom);
+                    CM6.toggleFullscreen(dom);
+                }
+            } else {
+                var fsEl = document.getElementById('oc-fullscreen-active');
+                if (fsEl) CM6.toggleFullscreen(fsEl);
+                if (typeof _ocExitFullscreen === 'function') _ocExitFullscreen();
+            }
+        }
+        ocUpdateTheme();
     },
 
     hide: function() {
         this.overlay.classList.remove('show');
 
-        if (this.editorInstance) {
-            if (this.editorInstance.toTextArea) this.editorInstance.toTextArea();
-            this.editorInstance = null;
-        }
+        this._destroyEditor();
+        window._mergeViewInstance = null;
 
         this.isModified = false;
         this.originalContent = '';
@@ -453,21 +378,22 @@ var ConfigEditor = {
             this.currentConfigFile = '';
         }
 
-        var loadingDiv = document.getElementById('config-editor-loading');
         var textarea = document.getElementById('config-editor-textarea');
         var mergeview = document.getElementById('config-mergeview-container');
         var editor_help = document.getElementById('config-editor-help');
         var layoutBtn = document.getElementById('config-editor-layout');
 
-        if (loadingDiv) loadingDiv.style.display = 'flex';
-        if (textarea) textarea.style.display = 'none';
+        if (textarea) {
+            ocHideLoading(textarea.parentNode);
+            textarea.style.display = 'none';
+        }
         if (mergeview) mergeview.style.display = 'none';
         if (layoutBtn) {
             layoutBtn.classList.remove('active');
             layoutBtn.title = "<%:Compare%>";
-            layoutBtn.innerHTML = this.SVG_COMPARE;
+            layoutBtn.innerHTML = _ocIcons.SVG_COMPARE;
         }
-        if (editor_help) editor_help.textContent = '<%:Press F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom%>';
+        if (editor_help) editor_help.innerHTML = '<%:Press%> <b style="color:var(--success-color)">F11</b> <%:for fullscreen,%> <b style="color:var(--success-color)">Esc</b> <%:to exit fullscreen,%> <b style="color:var(--success-color)">Ctrl + <%:Mouse Wheel%></b> <%:to zoom%>';
     },
 
     formatDisplayName: function(fileName) {
@@ -521,11 +447,9 @@ var ConfigEditor = {
     loadConfigContent: function() {
         var self = this;
         var statusText = document.getElementById('config-editor-status-text');
-        var loadingDiv = document.getElementById('config-editor-loading');
         var textarea = document.getElementById('config-editor-textarea');
         var mergeview = document.getElementById('config-mergeview-container');
         if (mergeview) mergeview.style.display = 'none';
-        if (textarea) textarea.style.display = 'block';
 
         statusText.textContent = '<%:Loading...%>';
 
@@ -550,59 +474,90 @@ var ConfigEditor = {
         }
 
         function renderEditor(content, mode, readOnly, lint) {
-            loadingDiv.style.display = 'none';
             textarea.value = content;
-            textarea.style.display = 'block';
+
+            var editorKey = mode + '|' + (readOnly ? 'r' : 'w') + '|' + (lint ? 'l' : 'n');
+
+            if (self.editorInstance && self._currentEditorMode === editorKey && !self.mergeViewActive) {
+                self.originalContent = content;
+                self.editorInstance.dispatch({
+                    changes: { from: 0, to: self.editorInstance.state.doc.length, insert: content }
+                });
+                self.isModified = false;
+                self.updateSaveButtonState();
+                textarea.style.display = 'none';
+                ocHideLoading(textarea.parentNode);
+                return;
+            }
 
             if (self.editorInstance) {
-                if (self.editorInstance.toTextArea) self.editorInstance.toTextArea();
-                self.editorInstance = null;
+                self._destroyEditor();
             }
-            self.editorInstance = CodeMirror.fromTextArea(textarea, {
-                mode: mode,
-                autoRefresh: true,
-                styleActiveLine: true,
-                lineNumbers: true,
-                theme: "material",
-                lineWrapping: true,
-                matchBrackets: true,
-                foldGutter: true,
-                lint: lint,
-                readOnly: readOnly,
-                gutters: lint
-                    ? ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"]
-                    : ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                extraKeys: {
-                    "F11": function(cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    },
-                    "Esc": function(cm) {
-                        if (cm.getOption("fullScreen")) {
-                            cm.setOption("fullScreen", false);
-                        }
-                    },
-                    "Tab": function(cm) {
-                        if (cm.somethingSelected()) {
-                            cm.indentSelection('add');
-                        } else {
-                            var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-                            cm.replaceSelection(spaces);
-                        }
-                    },
-                    "Ctrl-S": function(cm) {
-                        if (!readOnly) self.saveConfigContent();
-                    }
+            self._currentEditorMode = editorKey;
+
+            var exts = [];
+            var isDark = isDarkBackground(document.body);
+            var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
+            exts.push(CM6.themeExtension(isDark));
+            if (topSearch) exts.push(topSearch);
+
+            if (mode === 'text/yaml' || mode === 'text/x-yaml') {
+                exts.push(CM6.yaml());
+                if (lint) {
+                    exts.push(CM6.yamlLinter());
+                    exts.push(CM6.lintGutter());
                 }
-            });
-            self.editorInstance.setSize('100%', '100%');
-            self.editorInstance.setValue(content);
-            self.editorInstance.refresh();
-            if (!readOnly) {
-                self.editorInstance.on("change", function() {
-                    self.isModified = self.editorInstance.getValue() !== self.originalContent;
-                    self.updateSaveButtonState();
-                });
+                exts.push(CM6.autocompletion({ override: [CM6.mihomoCompletion] }));
+                exts.push(CM6.indentUnit.of("  "));
+                exts.push(CM6.indentMarkerExtension());
+            } else if (mode === 'text/x-sh' || mode === 'shell') {
+                exts.push(CM6.StreamLanguage.define(CM6.shell));
+            } else if (mode === 'text/x-properties' || mode === 'properties') {
+                exts.push(CM6.StreamLanguage.define(CM6.properties));
             }
+
+            if (readOnly) {
+                exts.push(CM6.EditorState.readOnly.of(true));
+            } else {
+                if (mode === 'text/yaml' || mode === 'text/x-yaml') {
+                    exts.push(CM6.placeholderExtension('<%:Enter YAML configuration...%>'));
+                } else if (mode === 'text/x-sh' || mode === 'shell') {
+                    exts.push(CM6.placeholderExtension('<%:Enter shell script...%>'));
+                } else {
+                    exts.push(CM6.placeholderExtension('<%:Enter configuration...%>'));
+                }
+            }
+
+            exts.push(CM6.keymap.of([
+                { key: 'Ctrl-s', run: function() {
+                    if (!readOnly) self.saveConfigContent();
+                    return true;
+                }}
+            ]));
+
+            if (!readOnly) {
+                exts.push(CM6.EditorView.updateListener.of(function(update) {
+                    if (update.docChanged) {
+                        self.isModified = update.state.doc.toString() !== self.originalContent;
+                        self.updateSaveButtonState();
+                    }
+                }));
+            }
+
+            var parent = textarea.parentNode;
+            self.editorInstance = new CM6.EditorView({
+                state: CM6.EditorState.create({
+                    doc: content,
+                    extensions: [CM6.baseExtensions(), ...exts]
+                }),
+                parent: parent
+            });
+
+            textarea.style.display = 'none';
+            self.editorInstance.dom.style.height = '100%';
+            ocHideLoading(textarea.parentNode);
+
+            if (CM6.mirrorThemeScrollbar) CM6.mirrorThemeScrollbar();
         }
 
         if (!this.isOverwrite) {
@@ -638,12 +593,12 @@ var ConfigEditor = {
                     }
                     self.updateModeTabs();
                 } else {
-                    loadingDiv.querySelector('span').textContent = '<%:Failed to load config file%>';
+                    ocHideLoading(textarea.parentNode);
                     statusText.textContent = '<%:Load failed%>';
                 }
             })
             .catch(function(err) {
-                loadingDiv.querySelector('span').textContent = '<%:Failed to load config file%>';
+                ocHideLoading(textarea.parentNode);
                 statusText.textContent = '<%:Load failed%>';
             });
     },
@@ -653,17 +608,18 @@ var ConfigEditor = {
         if (this.isOverwrite) return;
         var container = document.getElementById('config-mergeview-container');
         var textarea = document.getElementById('config-editor-textarea');
-        var loadingDiv = document.getElementById('config-editor-loading');
         var tabs = document.getElementById('config-mode-tabs');
         var editor_help = document.getElementById('config-editor-help');
         var statusText = document.getElementById('config-editor-status-text');
 
         if (tabs) tabs.style.display = 'none';
-        if (textarea) textarea.style.display = 'none';
-        if (loadingDiv) loadingDiv.style.display = 'none';
+        if (textarea) {
+            textarea.style.display = 'none';
+            ocHideLoading(textarea.parentNode);
+        }
         if (container) container.style.display = 'block';
         if (statusText) statusText.textContent = '<%:Loading...%>';
-        if (editor_help) editor_help.textContent = '<%:Press F10 to toggle differences, F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom%>';
+        if (editor_help) editor_help.innerHTML = '<%:Press%> <b style="color:var(--success-color)">F10</b> <%:to toggle differences,%> <b style="color:var(--success-color)">F11</b> <%:for fullscreen,%> <b style="color:var(--success-color)">Esc</b> <%:to exit fullscreen,%> <b style="color:var(--success-color)">Ctrl + <%:Mouse Wheel%></b> <%:to zoom%>';
 
         var getOriginal = function() {
             return new Promise(function(resolve, reject) {
@@ -685,68 +641,54 @@ var ConfigEditor = {
             });
         };
 
-        let showDifferences = true;
+        this.mergeShowDifferences = true;
 
         Promise.all([getOriginal(), getRuntime()]).then(function(contents){
             var original = contents[0] || '';
             var runtime = contents[1] || '';
             container.innerHTML = '';
-            if (self.editorInstance && self.editorInstance.toTextArea) self.editorInstance.toTextArea();
-            self.editorInstance = CodeMirror.MergeView(container, {
-                value: original,
-                orig: runtime,
-                mode: "text/yaml",
-                theme: "material",
-                lineNumbers: true,
-                autoRefresh: true,
-                styleActiveLine: true,
-                lineWrapping: true,
-                matchBrackets: true,
-                foldGutter: true,
-                lint: true,
-                highlightDifferences: showDifferences,
-                connect: null,
-                collapseIdentical: false,
-                readOnly: false,
-                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
-                extraKeys: {
-                    "F10": function() {
-                        showDifferences = !showDifferences;
-                        if (self.editorInstance && self.editorInstance.setShowDifferences) {
-                            self.editorInstance.setShowDifferences(showDifferences);
-                        }
-                    },
-                    "F11": function(cm) {
-                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                    },
-                    "Esc": function(cm) {
-                        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                    },
-                    "Tab": function(cm) {
-                        if (cm.somethingSelected()) {
-                            cm.indentSelection('add');
-                        } else {
-                            var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-                            cm.replaceSelection(spaces);
-                        }
-                    },
-                    "Ctrl-S": function(cm) {
-                        self.saveConfigContent();
-                    }
-                }
-            });
-            var leftEditor = self.editorInstance.edit;
-            if (leftEditor) {
-                leftEditor.on("change", function() {
-                    self.isModified = leftEditor.getValue() !== self.originalContent;
-                    self.updateSaveButtonState();
-                });
+            if (self.editorInstance) self._destroyEditor();
+
+            var isDark = isDarkBackground(document.body);
+            var themeExt = CM6.themeExtension(isDark);
+            var topSearch = (CM6 && CM6.topSearchExtension) ? CM6.topSearchExtension() : null;
+            var extA = [CM6.baseExtensions(), themeExt, CM6.placeholderExtension('<%:Edit original config...%>'), CM6.yaml(), CM6.yamlLinter(), CM6.lintGutter(), CM6.autocompletion({ override: [CM6.mihomoCompletion] }), CM6.indentUnit.of("  "), CM6.indentMarkerExtension()];
+            var extB = [CM6.baseExtensions(), themeExt, CM6.placeholderExtension('<%:Runtime config (read only)%>'), CM6.yaml(), CM6.indentUnit.of("  "), CM6.indentMarkerExtension(), CM6.EditorState.readOnly.of(true)];
+            var mergeDefaults = CM6.mergeDefaultConfig || {};
+            if (topSearch) {
+                extA.push(topSearch);
+                extB.push(topSearch);
             }
-            if (self.editorInstance.editor)
-                self.editorInstance.editor().setSize('100%', '100%');
-            if (self.editorInstance.rightOriginal && self.editorInstance.rightOriginal())
-                self.editorInstance.rightOriginal().setSize('100%', '100%');
+
+            extA.push(CM6.EditorView.updateListener.of(function(update) {
+                if (update.docChanged) {
+                    self.isModified = update.state.doc.toString() !== self.originalContent;
+                    self.updateSaveButtonState();
+                }
+            }));
+
+            self.editorInstance = new CM6.MergeView({
+                a: {
+                    doc: original,
+                    extensions: extA
+                },
+                b: {
+                    doc: runtime,
+                    extensions: extB
+                },
+                parent: container,
+                diffConfig: mergeDefaults.diffConfig || { scanLimit: 5000 },
+                gutter: mergeDefaults.gutter !== false,
+                revertControls: mergeDefaults.revertControls || 'b-to-a',
+                highlightChanges: self.mergeShowDifferences,
+                collapseUnchanged: mergeDefaults.collapseUnchanged || false
+            });
+
             self.mergeViewActive = true;
+            window._mergeViewInstance = self.editorInstance;
+
+            if (CM6.mirrorThemeScrollbar) CM6.mirrorThemeScrollbar();
+
             if (statusText) statusText.textContent = '<%:Compare mode: left(Original Config), right(Runtime Config)%>';
             var layoutBtn = document.getElementById('config-editor-layout');
             if (layoutBtn) layoutBtn.classList.add('active');
@@ -766,15 +708,16 @@ var ConfigEditor = {
         if (textarea) textarea.style.display = 'block';
         if (!this.isOverwrite && tabs) tabs.style.display = 'flex';
         this.mergeViewActive = false;
+        window._mergeViewInstance = null;
         this.loadConfigContent();
 
         if (layoutBtn) {
             layoutBtn.classList.remove('active');
             layoutBtn.title = "<%:Compare%>";
-            layoutBtn.innerHTML = this.SVG_COMPARE;
+            layoutBtn.innerHTML = _ocIcons.SVG_COMPARE;
         }
 
-        if (editor_help) editor_help.textContent = '<%:Press F11 for fullscreen, Esc to exit fullscreen, Ctrl+Mouse Wheel to zoom%>';
+        if (editor_help) editor_help.innerHTML = '<%:Press%> <b style="color:var(--success-color)">F11</b> <%:for fullscreen,%> <b style="color:var(--success-color)">Esc</b> <%:to exit fullscreen,%> <b style="color:var(--success-color)">Ctrl + <%:Mouse Wheel%></b> <%:to zoom%>';
     },
 
     saveConfigContent: function() {
@@ -790,10 +733,12 @@ var ConfigEditor = {
         saveBtn.disabled = true;
 
         var content;
-        if (this.mergeViewActive && this.editorInstance && this.editorInstance.edit) {
-            content = this.editorInstance.edit.getValue();
+        if (this.mergeViewActive && this.editorInstance && this.editorInstance.a) {
+            content = this.editorInstance.a.state.doc.toString();
+        } else if (this.editorInstance.state) {
+            content = this.editorInstance.state.doc.toString();
         } else {
-            content = this.editorInstance.getValue();
+            content = '';
         }
 
         if (!content) {
@@ -858,10 +803,12 @@ var ConfigEditor = {
         }
 
         var content;
-        if (this.mergeViewActive && this.editorInstance && this.editorInstance.edit) {
-            content = this.editorInstance.edit.getValue();
+        if (this.mergeViewActive && this.editorInstance && this.editorInstance.a) {
+            content = this.editorInstance.a.state.doc.toString();
+        } else if (this.editorInstance.state) {
+            content = this.editorInstance.state.doc.toString();
         } else {
-            content = this.editorInstance.getValue();
+            content = '';
         }
 
         var filename;
@@ -1862,6 +1809,73 @@ var ConfigEditor = {
         });
     },
 
+    addOverwriteParamRow: function(container, name, value) {
+        var row = document.createElement('div');
+        row.className = 'form-row overwrite-param-row';
+        row.style.cssText = 'align-items: center; gap: 6px; margin-bottom: 6px;';
+
+        var nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.className = 'form-input';
+        nameInput.placeholder = 'Key';
+        nameInput.value = name || '';
+        nameInput.style.cssText = 'flex: 1; height: 32px;';
+
+        var valueInput = document.createElement('input');
+        valueInput.type = 'text';
+        valueInput.className = 'form-input';
+        valueInput.placeholder = 'Value';
+        valueInput.value = value || '';
+        valueInput.style.cssText = 'flex: 1.5; height: 32px;';
+
+        var removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'icon-btn';
+        removeBtn.title = '<%:Remove%>';
+        removeBtn.style.cssText = 'flex-shrink: 0;';
+        removeBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+        removeBtn.addEventListener('click', function() {
+            row.parentNode.removeChild(row);
+            if (container.children.length === 0) {
+                container.style.display = 'none';
+            }
+        });
+
+        row.appendChild(nameInput);
+        row.appendChild(valueInput);
+        row.appendChild(removeBtn);
+        container.appendChild(row);
+        container.style.display = 'block';
+    },
+
+    buildOverwriteParamRows: function(container, paramStr) {
+        if (!paramStr) return;
+        var pairs = paramStr.split(';');
+        for (var i = 0; i < pairs.length; i++) {
+            var pair = pairs[i].trim();
+            if (pair) {
+                var eqIdx = pair.indexOf('=');
+                var name = eqIdx > 0 ? pair.substring(0, eqIdx).trim() : pair;
+                var value = eqIdx > 0 ? pair.substring(eqIdx + 1).trim() : '';
+                this.addOverwriteParamRow(container, name, value);
+            }
+        }
+    },
+
+    collectOverwriteParams: function(container) {
+        var rows = container.querySelectorAll('.overwrite-param-row');
+        var params = [];
+        for (var i = 0; i < rows.length; i++) {
+            var inputs = rows[i].querySelectorAll('input');
+            var name = inputs[0].value.trim();
+            var value = inputs[1].value.trim();
+            if (name) {
+                params.push(name + '=' + value);
+            }
+        }
+        return params.join(';');
+    },
+
     getOverwriteConfigSelection: function(root, dropdownId) {
         var dropdown = root.querySelector('#' + dropdownId);
         if (!dropdown) return [];
@@ -1985,7 +1999,9 @@ var ConfigEditor = {
                 </div>
                 <div class="form-group" id="overwrite-subscribe-param-group" style="display:'block';">
                     <label><%:Environment variable%>:</label>
-                    <input type="text" class="form-input" name="param" id="overwrite-subscribe-param" value="${sub.param||''}" placeholder="key1=value1;key2=value2">
+                    <div class="form-help" style="margin-bottom: unset;"><%:Set environment variables for the overwrite script%></div>
+                    <div id="overwrite-subscribe-param-container" style="display:none;"></div>
+                    <button type="button" id="overwrite-subscribe-param-add" class="btn upload-btn" style="align-self: flex-start; margin-top: 4px; padding: 4px 12px; font-size: 13px; border: 1px solid var(--primary-color); border-radius: var(--radius-sm); cursor: pointer;">+ <%:Add Param%></button>
                 </div>
                 <div class="upload-progress" id="overwrite-upload-progress" style="display:none;">
                     <div class="progress-bar">
@@ -2013,10 +2029,9 @@ var ConfigEditor = {
 
         var ocDiv = document.createElement('div');
         ocDiv.className = 'oc';
-        var mainOc = document.querySelector('.oc[data-darkmode="true"]');
-        if (mainOc) {
-            ocDiv.setAttribute('data-darkmode', 'true');
-        }
+		if (document.documentElement.getAttribute('data-darkmode') === 'true') {
+			ocDiv.setAttribute('data-darkmode', 'true');
+		}
 
         var overlay = document.createElement('div');
         overlay.className = 'config-upload-model-overlay show';
@@ -2166,6 +2181,14 @@ var ConfigEditor = {
         if (model.querySelector('#overwrite-subscribe-filename')) {
             model.querySelector('#overwrite-subscribe-filename').addEventListener('input', validateAddOverwriteForm);
         }
+        var paramContainer = model.querySelector('#overwrite-subscribe-param-container');
+        if (paramContainer) {
+            self.buildOverwriteParamRows(paramContainer, '');
+            model.querySelector('#overwrite-subscribe-param-add').addEventListener('click', function() {
+                self.addOverwriteParamRow(paramContainer, '', '');
+            });
+        }
+
         if (model.querySelector('#overwrite-subscribe-type')) {
             model.querySelector('#overwrite-subscribe-type').addEventListener('change', validateAddOverwriteForm);
         }
@@ -2238,7 +2261,7 @@ var ConfigEditor = {
                 var update_days = form.querySelector('#overwrite-subscribe-update-days').value;
                 var update_hour = form.querySelector('#overwrite-subscribe-update-hour').value;
                 var type = form.querySelector('#overwrite-subscribe-type').value;
-                var param = form.querySelector('#overwrite-subscribe-param').value.trim();
+                var param = self.collectOverwriteParams(form.querySelector('#overwrite-subscribe-param-container'));
                 var selectedConfigPaths = self.getOverwriteConfigSelection(model, 'overwrite-subscribe-config-dropdown');
                 if (!filename) {
                     alert('<%:Please enter a filename%>');
@@ -2320,10 +2343,9 @@ var ConfigEditor = {
 
         var ocDiv = document.createElement('div');
         ocDiv.className = 'oc';
-        var mainOc = document.querySelector('.oc[data-darkmode="true"]');
-        if (mainOc) {
-            ocDiv.setAttribute('data-darkmode', 'true');
-        }
+		if (document.documentElement.getAttribute('data-darkmode') === 'true') {
+			ocDiv.setAttribute('data-darkmode', 'true');
+		}
 
         var overlay = document.createElement('div');
         overlay.className = 'config-upload-model-overlay show';
@@ -2366,6 +2388,17 @@ var ConfigEditor = {
         document.body.appendChild(ocDiv);
 
         this.bindOverwriteConfigDropdown(model.querySelector('#overwrite-subscribe-config-dropdown'));
+
+        var paramContainer = model.querySelector('#overwrite-subscribe-param-container');
+        if (paramContainer && sub && sub.param) {
+            self.buildOverwriteParamRows(paramContainer, sub.param);
+        }
+        var paramAddBtn = model.querySelector('#overwrite-subscribe-param-add');
+        if (paramAddBtn) {
+            paramAddBtn.addEventListener('click', function() {
+                self.addOverwriteParamRow(paramContainer, '', '');
+            });
+        }
 
         var typeSelect = model.querySelector('#overwrite-subscribe-type');
         var urlGroup = model.querySelector('#overwrite-subscribe-url-group');
@@ -2426,7 +2459,7 @@ var ConfigEditor = {
             var newName = form.querySelector('#overwrite-subscribe-filename').value.trim();
             var type = form.querySelector('#overwrite-subscribe-type').value;
             var url = form.querySelector('#overwrite-subscribe-url').value.trim();
-            var param = form.querySelector('#overwrite-subscribe-param').value.trim();
+            var param = self.collectOverwriteParams(form.querySelector('#overwrite-subscribe-param-container'));
             var selectedConfigPaths = self.getOverwriteConfigSelection(model, 'overwrite-subscribe-config-dropdown');
 
             if (!newName) {
@@ -2456,6 +2489,7 @@ var ConfigEditor = {
             }
             formData.delete('config');
             formData.append('config', selectedConfigPaths.join('\n'));
+            formData.append('param', param);
             if (newName !== name) {
                 formData.append('old_filename', name);
             }
@@ -2529,7 +2563,7 @@ var ConfigEditor = {
         this.hideMergeView();
         this.hide();
 
-        if (window.OverwriteSubscribeManager && typeof window.OverwriteSubscribeManager.load === 'function') {
+        if (window.OverwriteSubscribeManager && window.OverwriteSubscribeManager.load) {
             window.OverwriteSubscribeManager.load(true);
         }
         try {
@@ -2539,39 +2573,21 @@ var ConfigEditor = {
 
     updateZoom: function(newZoom) {
         this.currentZoom = newZoom;
-
-        if (this.editorInstance) {
-            var cmWrapper = this.model.querySelector('.CodeMirror');
-            if (cmWrapper) {
-                this.zoomLevels.forEach(function(level) {
-                    cmWrapper.classList.remove('zoom-' + level);
-                });
-
-                if (this.currentZoom !== 100) {
-                    cmWrapper.classList.add('zoom-' + this.currentZoom);
-                }
-
-                this.editorInstance.refresh();
-            }
-        }
+        ocApplyZoom(this.editorInstance, newZoom);
     },
 
     zoomIn: function() {
-        var currentIndex = this.zoomLevels.indexOf(this.currentZoom);
-        if (currentIndex < this.zoomLevels.length - 1) {
-            this.updateZoom(this.zoomLevels[currentIndex + 1]);
-        }
+        var newZoom = ocZoomIn(this.currentZoom);
+        if (newZoom !== this.currentZoom) this.updateZoom(newZoom);
     },
 
     zoomOut: function() {
-        var currentIndex = this.zoomLevels.indexOf(this.currentZoom);
-        if (currentIndex > 0) {
-            this.updateZoom(this.zoomLevels[currentIndex - 1]);
-        }
+        var newZoom = ocZoomOut(this.currentZoom);
+        if (newZoom !== this.currentZoom) this.updateZoom(newZoom);
     },
 
     resetZoom: function() {
-        this.updateZoom(100);
+        this.updateZoom(ocResetZoom());
     },
 
     isPointOnTextContent: function(el, clientX, clientY) {
@@ -2773,18 +2789,6 @@ var ConfigEditor = {
 
             self.model.style.width = newWidth + 'px';
             self.model.style.height = newHeight + 'px';
-
-            if (self.editorInstance) {
-                requestAnimationFrame(function() {
-                    if (self.mergeViewActive && self.editorInstance.editor) {
-                        self.editorInstance.editor().refresh();
-                        if (self.editorInstance.rightOriginal)
-                            self.editorInstance.rightOriginal().refresh();
-                    } else {
-                        self.editorInstance.refresh();
-                    }
-                });
-            }
         }
 
         function onMouseUp() {
@@ -2794,18 +2798,6 @@ var ConfigEditor = {
 
             document.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseup', onMouseUp);
-
-            if (self.editorInstance) {
-                setTimeout(function() {
-                    if (self.mergeViewActive && self.editorInstance.editor) {
-                        self.editorInstance.editor().refresh();
-                        if (self.editorInstance.rightOriginal)
-                            self.editorInstance.rightOriginal().refresh();
-                    } else {
-                        self.editorInstance.refresh();
-                    }
-                }, 50);
-            }
         }
 
         resizeHandle.addEventListener('touchstart', function(e) {
@@ -2846,18 +2838,6 @@ var ConfigEditor = {
             self.model.style.width = newWidth + 'px';
             self.model.style.height = newHeight + 'px';
 
-            if (self.editorInstance) {
-                requestAnimationFrame(function() {
-                    if (self.mergeViewActive && self.editorInstance.editor) {
-                        self.editorInstance.editor().refresh();
-                        if (self.editorInstance.rightOriginal)
-                            self.editorInstance.rightOriginal().refresh();
-                    } else {
-                        self.editorInstance.refresh();
-                    }
-                });
-            }
-
             e.preventDefault();
         }
 
@@ -2867,18 +2847,6 @@ var ConfigEditor = {
 
             document.removeEventListener('touchmove', onTouchMove);
             document.removeEventListener('touchend', onTouchEnd);
-
-            if (self.editorInstance) {
-                setTimeout(function() {
-                    if (self.mergeViewActive && self.editorInstance.editor) {
-                        self.editorInstance.editor().refresh();
-                        if (self.editorInstance.rightOriginal)
-                            self.editorInstance.rightOriginal().refresh();
-                    } else {
-                        self.editorInstance.refresh();
-                    }
-                }, 50);
-            }
         }
     }
 };
