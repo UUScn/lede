@@ -115,7 +115,6 @@ jobs:
           CONFIG_PACKAGE_libnftnl=y
           CONFIG_PACKAGE_libruby=y
           CONFIG_PACKAGE_libyaml=y
-          CONFIG_PACKAGE_luci-app-openclash=y
           CONFIG_PACKAGE_nftables-json=y
           CONFIG_PACKAGE_ruby=y
           CONFIG_PACKAGE_ruby-bigdecimal=y
