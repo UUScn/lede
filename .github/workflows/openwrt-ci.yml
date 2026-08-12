@@ -82,7 +82,6 @@ jobs:
           CONFIG_TARGET_x86_64_DEVICE_generic=y
           # CONFIG_GRUB_CONSOLE is not set
           CONFIG_GRUB_TIMEOUT="2"
-          CONFIG_IMAGEOPT=y
           CONFIG_PACKAGE_6in4=y
           CONFIG_PACKAGE_bash=y
           CONFIG_PACKAGE_bridge=y
@@ -95,9 +94,16 @@ jobs:
           CONFIG_PACKAGE_jansson=y
           CONFIG_PACKAGE_kmod-iptunnel=y
           CONFIG_PACKAGE_kmod-iptunnel4=y
+          CONFIG_PACKAGE_kmod-nfnetlink-queue=y
           CONFIG_PACKAGE_kmod-nft-core=y
           CONFIG_PACKAGE_kmod-nft-fullcone=y
           CONFIG_PACKAGE_kmod-nft-nat=y
+          CONFIG_PACKAGE_kmod-nft-netdev=y
+          CONFIG_PACKAGE_kmod-nft-offload=y
+          CONFIG_PACKAGE_kmod-nft-queue=y
+          CONFIG_PACKAGE_kmod-nft-socket=y
+          CONFIG_PACKAGE_kmod-nft-tproxy=y
+          CONFIG_PACKAGE_kmod-nft-xfrm=y
           CONFIG_PACKAGE_kmod-sit=y
           CONFIG_PACKAGE_libgmp=y
           CONFIG_PACKAGE_libnetfilter-conntrack=y
@@ -107,7 +113,6 @@ jobs:
           CONFIG_PACKAGE_nftables-json=y
           # CONFIG_PACKAGE_procd-ujail is not set
           CONFIG_PACKAGE_vim=y
-          # CONFIG_PER_FEED_REPO is not set
           CONFIG_TARGET_EXT4_BLOCKSIZE=4096
           CONFIG_TARGET_EXT4_BLOCKSIZE_4K=y
           CONFIG_TARGET_EXT4_JOURNAL=y
